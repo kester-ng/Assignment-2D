@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'reactstrap'; 
+import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'; 
 import axios from 'axios';
 
 class App extends Component {
   state = {
-    ingredients: []
+    ingredients: [],
+    addModal: false
   }
 
   componentWillMount() {
@@ -16,6 +17,12 @@ class App extends Component {
         ingredients: response.data.ingredients
       })
     });
+  }
+
+  toggleAddModal() {
+    this.setState({
+      addModal: !this.state.addModal
+    })
   }
 
   render() {
@@ -36,6 +43,17 @@ class App extends Component {
 
     return (
       <div className="App Container">
+        <Button color="primary" onClick={this.toggleAddModal.bind(this)}>Add</Button>
+        <Modal isOpen={this.state.addModal} toggle={this.toggleAddModal.bind(this)}>
+        <ModalHeader toggle={this.toggleAddModal.bind(this)}>Modal title</ModalHeader>
+          <ModalBody>
+            Cats are the cutest thing alive!
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.toggleAddModal.bind(this)}>Do Something</Button>{' '}
+            <Button color="secondary" onClick={this.toggleAddModal.bind(this)}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
         <Table>
           <thead>
             <tr>
