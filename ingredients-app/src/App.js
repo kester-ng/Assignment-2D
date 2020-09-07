@@ -69,6 +69,19 @@ class App extends Component {
     });
   }
 
+  deleteIngredient(id) {
+    let url = "https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients/" + id;
+    axios.delete(url, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+    }).then((response) => {
+      this.refreshData();
+      this.setState({
+        addModal: false
+      });
+    });
+  }
+
   updateIngredient() {
     console.log(this.state.editIngredientData);
     let url = "https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients/" + this.state.editIngredientData.id;
@@ -83,6 +96,7 @@ class App extends Component {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     }).then((response) => {
+      this.refreshData();
       this.setState({
         editIngredientData: {
           _id: '',
@@ -92,7 +106,6 @@ class App extends Component {
         },
         editModal: false
       });
-      this.refreshData();
     })
   }
 
@@ -117,7 +130,7 @@ class App extends Component {
           <td>{ingredient.stock}</td>
           <td>
             <Button color="success" size="small" className="mr-2" onClick={this.editIngredient.bind(this, ingredient._id, ingredient.name, ingredient.price.$numberDecimal, ingredient.stock)}>Edit</Button>
-            <Button color="danger" size="small">Delete</Button>
+            <Button color="danger" size="small" onClick={this.deleteIngredient.bind(this, ingredient._id)}>Delete</Button>
           </td>
         </tr>
       );
@@ -126,7 +139,7 @@ class App extends Component {
     return (
       <div className="App Container">
         <h1>Keep check of your ingredients or food items here!</h1>
-        <Button className="my-3" color="primary" onClick={this.toggleAddModal.bind(this)}>Add</Button>
+        <Button className="my-3 ml-2" color="primary" onClick={this.toggleAddModal.bind(this)}>Add</Button>
         <Modal isOpen={this.state.addModal} toggle={this.toggleAddModal.bind(this)}>
           <ModalHeader toggle={this.toggleAddModal.bind(this)}>Add a new ingredient or food item</ModalHeader>
             <ModalBody>
@@ -156,7 +169,7 @@ class App extends Component {
               </FormGroup>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.addIngredient.bind(this)}>Do Something</Button>{' '}
+              <Button color="primary" onClick={this.addIngredient.bind(this)}>Add</Button>{' '}
               <Button color="secondary" onClick={this.toggleAddModal.bind(this)}>Cancel</Button>
             </ModalFooter>
         </Modal>
