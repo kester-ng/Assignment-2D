@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader, Input, FormGroup, Label } from 'reactstrap'; 
+import { Table, Button } from 'reactstrap'; 
 import axios from 'axios';
+import CreateIngredientModal from './components/CreateIngredientModal';
+import EditIngredientModal from './components/EditIngredientModal';
 
 class App extends Component {
   state = {
@@ -20,25 +22,6 @@ class App extends Component {
     }
   }
 
-  // POST to AWS lambda
-  addIngredient() {
-    axios.post("https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients", this.state.newIngredientData, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-    }).then((response) => {
-      let { ingredients } = this.state;
-      ingredients.push(response.data.ingredients);
-      this.setState({
-        addModal: false,
-        newIngredientData: {
-          name: '',
-          price: '',
-          stock: ''
-        }
-      });
-    });
-  }
-
   componentWillMount() {
     axios.get("https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients", {
       'Access-Control-Allow-Origin' : '*',
@@ -48,12 +31,20 @@ class App extends Component {
         ingredients: response.data.ingredients
       })
     });
+
+    this.toggleAddModal = this.toggleAddModal.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.updateName = this.updateName.bind(this);
+    this.updatePrice = this.updatePrice.bind(this);
+    this.updateStock = this.updateStock.bind(this);
+    this.refreshData = this.refreshData.bind(this);
+    this.clearEdit = this.refreshData.bind(this);
   }
 
   toggleAddModal() {
     this.setState({
       addModal: !this.state.addModal
-    })
+    });
   }
 
   editIngredient(id, name, price, stock) {
@@ -66,6 +57,35 @@ class App extends Component {
   toggleEditModal() {
     this.setState({
       editModal: !this.state.editModal
+    });
+  }
+
+  updateName = (e) => {
+    let { editIngredientData } = this.state;
+    editIngredientData.name = e.target.value;
+    this.setState({ editIngredientData });
+  }
+
+  updatePrice = (e) => {
+    let { editIngredientData } = this.state;
+    editIngredientData.price = e.target.value;
+    this.setState({ editIngredientData });
+  }
+
+  updateStock = (e) => {
+    let { editIngredientData } = this.state;
+    editIngredientData.stock = e.target.value;
+    this.setState({ editIngredientData });
+  }
+
+  clearEdit() {
+    this.setState({
+      editIngredientData: {
+        _id: '',
+        name: '',
+        price: '',
+        stock: ''
+      },
     });
   }
 
@@ -140,72 +160,8 @@ class App extends Component {
       <div className="App Container">
         <h1>Keep check of your ingredients or food items here!</h1>
         <Button className="my-3 ml-2" color="primary" onClick={this.toggleAddModal.bind(this)}>Add</Button>
-        <Modal isOpen={this.state.addModal} toggle={this.toggleAddModal.bind(this)}>
-          <ModalHeader toggle={this.toggleAddModal.bind(this)}>Add a new ingredient or food item</ModalHeader>
-            <ModalBody>
-              <FormGroup>
-                <Label for="name">Name</Label>
-                <Input id="name" value={this.state.newIngredientData.name} onChange={(e) => {
-                  let { newIngredientData } = this.state;
-                  newIngredientData.name = e.target.value;
-                  this.setState({ newIngredientData });
-                }}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="price">Price</Label>
-                <Input id="price" value={this.state.newIngredientData.price} onChange={(e) => {
-                  let { newIngredientData } = this.state;
-                  newIngredientData.price = e.target.value;
-                  this.setState({ newIngredientData });
-                }}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="stock">Stock</Label>
-                <Input id="stock" value={this.state.newIngredientData.stock} onChange={(e) => {
-                  let { newIngredientData } = this.state;
-                  newIngredientData.stock = e.target.value;
-                  this.setState({ newIngredientData });
-                }}/>
-              </FormGroup>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.addIngredient.bind(this)}>Add</Button>{' '}
-              <Button color="secondary" onClick={this.toggleAddModal.bind(this)}>Cancel</Button>
-            </ModalFooter>
-        </Modal>
-        <Modal isOpen={this.state.editModal} toggle={this.toggleEditModal.bind(this)}>
-          <ModalHeader toggle={this.toggleEditModal.bind(this)}>Update a new ingredient or food item</ModalHeader>
-            <ModalBody>
-              <FormGroup>
-                <Label for="name">Name</Label>
-                <Input id="name" value={this.state.editIngredientData.name} onChange={(e) => {
-                  let { editIngredientData } = this.state;
-                  editIngredientData.name = e.target.value;
-                  this.setState({ editIngredientData });
-                }}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="price">Price</Label>
-                <Input id="price" value={this.state.editIngredientData.price} onChange={(e) => {
-                  let { editIngredientData } = this.state;
-                  editIngredientData.price = e.target.value;
-                  this.setState({ editIngredientData });
-                }}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="stock">Stock</Label>
-                <Input id="stock" value={this.state.editIngredientData.stock} onChange={(e) => {
-                  let { editIngredientData } = this.state;
-                  editIngredientData.stock = e.target.value;
-                  this.setState({ editIngredientData });
-                }}/>
-              </FormGroup>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.updateIngredient.bind(this)}>Update</Button>{' '}
-              <Button color="secondary" onClick={this.toggleEditModal.bind(this)}>Cancel</Button>
-            </ModalFooter>
-        </Modal>
+        <CreateIngredientModal addModal={this.state.addModal} toggleAddModal={this.toggleAddModal} ingredients={this.state.ingredients}></CreateIngredientModal>
+        <EditIngredientModal editModal={this.state.editModal} toggleEditModal={this.toggleEditModal} editIngredientData={this.state.editIngredientData} updateName={this.updateName} updatePrice={this.updatePrice} updateStock={this.updateStock} clearEdit={this.clearEdit} refreshData={this.refreshData}></EditIngredientModal>
         <Table>
           <thead>
             <tr>
