@@ -23,12 +23,13 @@ class App extends Component {
   }
 
   componentWillMount() {
-    axios.get("https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients", {
+    axios.get("https://txxvc3m1zd.execute-api.ap-southeast-1.amazonaws.com/dev/api/ingredients", {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     }).then((response) => {
+      console.log(response);
       this.setState({
-        ingredients: response.data.ingredients
+        ingredients: response.data.data
       })
     });
 
@@ -104,7 +105,7 @@ class App extends Component {
 
   updateIngredient() {
     console.log(this.state.editIngredientData);
-    let url = "https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients/" + this.state.editIngredientData.id;
+    let url = "https://txxvc3m1zd.execute-api.ap-southeast-1.amazonaws.com/dev/api/ingredients" + this.state.editIngredientData.id;
     let updated = {
       name: this.state.editIngredientData.name,
       price: this.state.editIngredientData.price,
@@ -130,12 +131,12 @@ class App extends Component {
   }
 
   refreshData() {
-    axios.get("https://pyyz2y0tzg.execute-api.us-east-1.amazonaws.com/dev/ingredients", {
+    axios.get("https://txxvc3m1zd.execute-api.ap-southeast-1.amazonaws.com/dev/api/ingredients", {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     }).then((response) => {
       this.setState({
-        ingredients: response.data.ingredients
+        ingredients: response.data.data
       })
     });
   }
