@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'reactstrap'; 
+import { Table, Button, Badge } from 'reactstrap'; 
 import axios from 'axios';
 import CreateIngredientModal from './components/CreateIngredientModal';
 import EditIngredientModal from './components/EditIngredientModal';
@@ -159,11 +159,11 @@ class App extends Component {
 
     return (
       <div className="App Container">
-        <h1>Keep check of your ingredients or food items here!</h1>
+        <h1 className="ml-2"><Badge color="secondary">RESTFUL API using React & ReactStrap</Badge></h1>
         <Button className="my-3 ml-2" color="primary" onClick={this.toggleAddModal.bind(this)}>Add</Button>
         <CreateIngredientModal addModal={this.state.addModal} toggleAddModal={this.toggleAddModal} ingredients={this.state.ingredients}></CreateIngredientModal>
         <EditIngredientModal editModal={this.state.editModal} toggleEditModal={this.toggleEditModal} editIngredientData={this.state.editIngredientData} updateName={this.updateName} updatePrice={this.updatePrice} updateStock={this.updateStock} clearEdit={this.clearEdit} refreshData={this.refreshData}></EditIngredientModal>
-        <Table>
+        <Table bordered>
           <thead>
             <tr>
               <th>#</th>

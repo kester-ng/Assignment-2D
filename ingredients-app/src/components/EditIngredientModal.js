@@ -33,9 +33,11 @@ class EditIngredientModal extends Component {
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
       })
       .then((response) => {
-        this.props.clearEdit();
-        this.props.refreshData();
-        this.props.toggleEditModal();
+        if (typeof response.data.data != "undefined") {
+          this.props.clearEdit();
+          this.props.refreshData();
+          this.props.toggleEditModal();
+        }
       });
   }
 

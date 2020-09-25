@@ -36,14 +36,16 @@ class CreateIngredientModal extends Component {
       )
       .then((response) => {
         // push it to the props ingredients data
-        this.props.ingredients.push(response.data.data);
-        this.setState({
-          newIngredientData: {
-            name: "",
-            price: "",
-            stock: "",
-          },
-        });
+        if (typeof response.data.data != "undefined") {
+          this.props.ingredients.push(response.data.data);
+          this.setState({
+            newIngredientData: {
+              name: "",
+              price: "",
+              stock: "",
+            },
+          });
+        }
         this.props.toggleAddModal();
       });
   }
