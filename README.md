@@ -16,4 +16,4 @@ A very simple SPA that uses React, ReactStrap and Bootstrap that allows users to
 
  Here is the image for your reference!
 
- ![Website](images/website.png)
+ ![Website](images/website_updated.png)
