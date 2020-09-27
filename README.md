@@ -12,6 +12,8 @@ A very simple SPA that uses React, ReactStrap and Bootstrap that allows users to
 
  3. Play around and enjoy! 
 
+ 4. Do note that the CRUD functions may have some delays (since it is using AWS Lambda). So give it few seconds if nothing pops up or is updated!
+
  Here is the image for your reference!
 
  ![Website](images/website.png)
