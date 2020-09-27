@@ -9,6 +9,7 @@ import {
   Input,
   FormGroup,
   Label,
+  FormFeedback
 } from "reactstrap";
 
 class CreateIngredientModal extends Component {
@@ -25,6 +26,10 @@ class CreateIngredientModal extends Component {
   }
 
   addIngredient() {
+    // validate first!
+    if (!this.validateName(this.state.newIngredientData.name) || !this.validatePrice(this.state.newIngredientData.price) || !this.validateStock(this.state.newIngredientData.stock)) {
+      return; // nothing happens
+    }
     axios
       .post(
         "https://txxvc3m1zd.execute-api.ap-southeast-1.amazonaws.com/dev/api/ingredients",
@@ -50,6 +55,21 @@ class CreateIngredientModal extends Component {
       });
   }
 
+  validatePrice(target) {
+    return target.match("^[0-9]+([,.][0-9]+)?$");
+  }
+
+  validateStock(target) {
+    if (target == "") {
+      return false;
+    }
+    return target.match("^[0-9]*$");
+  }
+
+  validateName(target) {
+    return !(target == ""); //non-empty
+  }
+
   render() {
     return (
       <div>
@@ -63,36 +83,48 @@ class CreateIngredientModal extends Component {
               <Input
                 id="name"
                 value={this.state.newIngredientData.name}
+                type="text"
+                valid={this.validateName(this.state.newIngredientData.name)}
+                invalid={!this.validateName(this.state.newIngredientData.name)}
                 onChange={(e) => {
                   let { newIngredientData } = this.state;
                   newIngredientData.name = e.target.value;
                   this.setState({ newIngredientData });
                 }}
               />
+              <FormFeedback>Name must not be empty!</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="price">Price</Label>
               <Input
                 id="price"
+                type="text"
                 value={this.state.newIngredientData.price}
+                valid={this.validatePrice(this.state.newIngredientData.price)}
+                invalid={!this.validatePrice(this.state.newIngredientData.price)}
                 onChange={(e) => {
                   let { newIngredientData } = this.state;
                   newIngredientData.price = e.target.value;
                   this.setState({ newIngredientData });
                 }}
               />
+              <FormFeedback>Price must be an integer or decimal!</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="stock">Stock</Label>
               <Input
                 id="stock"
                 value={this.state.newIngredientData.stock}
+                type="text"
+                valid={this.validateStock(this.state.newIngredientData.stock)}
+                invalid={!this.validateStock(this.state.newIngredientData.stock)}
                 onChange={(e) => {
                   let { newIngredientData } = this.state;
                   newIngredientData.stock = e.target.value;
                   this.setState({ newIngredientData });
                 }}
               />
+              <FormFeedback>Stock must be an integer!</FormFeedback>
             </FormGroup>
           </ModalBody>
           <ModalFooter>

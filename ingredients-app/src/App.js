@@ -96,7 +96,24 @@ class App extends Component {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
     }).then((response) => {
-      this.refreshData();
+      var ingredients = this.state.ingredients.slice()
+      var index = -1;
+      for (let i = 0; i < ingredients.length; i++) {
+        if (ingredients[i].id == id) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index == -1) {
+        this.refreshData(); //refresh just in case
+      } else {
+        ingredients.splice(index, 1);
+        this.setState({
+          ingredients: ingredients
+        });
+      }
+      
       this.setState({
         addModal: false
       });

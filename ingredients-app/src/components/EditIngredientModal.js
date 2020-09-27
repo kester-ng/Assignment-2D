@@ -17,6 +17,9 @@ class EditIngredientModal extends Component {
   }
 
   updateIngredient() {
+    if (!this.validateName(this.props.editIngredientData.name) || !this.validatePrice(this.props.editIngredientData.price) || !this.validateStock(this.props.editIngredientData.stock)) {
+      return;
+    }
     let url =
       "https://txxvc3m1zd.execute-api.ap-southeast-1.amazonaws.com/dev/api/ingredients/" +
       this.props.editIngredientData.id;
@@ -48,6 +51,22 @@ class EditIngredientModal extends Component {
     this.props.updateName(e);
   }
 
+  validatePrice(target) {
+    return target.match("^[0-9]+([,.][0-9]+)?$");
+  }
+
+  validateStock(target) {
+    var stock = target.toString();
+    if (stock == "") {
+      return false;
+    }
+    return stock.match("^[0-9]*$");
+  }
+
+  validateName(target) {
+    return !(target == ""); //non-empty
+  }
+
   render() {
     return (
       <Modal isOpen={this.props.editModal} toggle={this.props.toggleEditModal}>
@@ -59,6 +78,9 @@ class EditIngredientModal extends Component {
             <Label for="name">Name</Label>
             <Input
               id="name"
+              type="text"
+              valid={this.validateName(this.props.editIngredientData.name)}
+              invalid={!this.validateName(this.props.editIngredientData.name)}
               value={this.props.editIngredientData.name}
               onChange={this.props.updateName}
             />
@@ -67,6 +89,9 @@ class EditIngredientModal extends Component {
             <Label for="price">Price</Label>
             <Input
               id="price"
+              type="text"
+              valid={this.validatePrice(this.props.editIngredientData.price)}
+              invalid={!this.validatePrice(this.props.editIngredientData.price)}
               value={this.props.editIngredientData.price}
               onChange={this.props.updatePrice}
             />
@@ -75,6 +100,9 @@ class EditIngredientModal extends Component {
             <Label for="stock">Stock</Label>
             <Input
               id="stock"
+              type="text"
+              valid={this.validateStock(this.props.editIngredientData.stock)}
+              invalid={!this.validateStock(this.props.editIngredientData.stock)}
               value={this.props.editIngredientData.stock}
               onChange={this.props.updateStock}
             />
