@@ -7,12 +7,14 @@ A very simple SPA that uses React, ReactStrap and Bootstrap that allows users to
 ### How to start up the front-end
  
  1. In your terminal or command prompt, make sure you are in the ingredient-app directory (contains `app.js`).
+ 
+ 2. Type in `yarn install` to install all the dependencies.
 
- 2. type in `yarn start` to see the website.
+ 3. type in `yarn start` to see the website.
 
- 3. Play around and enjoy! 
+ 4. Play around and enjoy! 
 
- 4. Do note that the CRUD functions may have some delays (since it is using AWS Lambda). So give it few seconds if nothing pops up or is updated!
+ 5. Do note that the CRUD functions may have some delays (since it is using AWS Lambda). So give it few seconds if nothing pops up or is updated!
 
  Here is the image for your reference!
 
