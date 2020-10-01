@@ -14,7 +14,7 @@ A very simple SPA that uses React, ReactStrap and Bootstrap that allows users to
 
  4. Play around and enjoy! 
 
- 5. Do note that the CRUD functions may have some delays (since it is using AWS Lambda). So give it few seconds if nothing pops up or is updated!
+ 5. Do note that the CRUD functions may have some delays (since it is using AWS Lambda). So give it few seconds if nothing pops up or is updated! Especially delete, which will take 3 ~ 5 seconds to be updated. DO TAKE NOTE!
 
  Here is the image for your reference!
 
